@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.framework.dao.MemberDao">
+
+	<select id="queryObject" resultType="com.framework.entity.MemberEntity">
+		select * from member where member_id = #{value}
+	</select>
+	<select id="login" resultType="com.framework.entity.MemberEntity">
+		select * from member where name = #{name} and password=#{password}
+	</select>
+	<select id="queryList" resultType="com.framework.entity.MemberEntity">
+		select * from member 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from member 
+	</select>
+	 
+	<insert id="save" parameterType="com.framework.entity.MemberEntity" useGeneratedKeys="true" keyProperty="memberId">
+		insert into member
+		(
+			`name`, 
+			`username`, 
+			`password`, 
+			`sex`, 
+			`grade`, 
+			`class`, 
+			`student_num`, 
+			`telephone`, 
+			`admission_time`, 
+			`vol_num`, 
+			`department`, 
+			`email`, 
+			`address`, 
+			`remarks`
+		)
+		values
+		(
+			#{name}, 
+			#{username}, 
+			#{password}, 
+			#{sex}, 
+			#{grade}, 
+			#{class}, 
+			#{studentNum}, 
+			#{telephone}, 
+			#{admissionTime}, 
+			#{volNum}, 
+			#{department}, 
+			#{email}, 
+			#{address}, 
+			#{remarks}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.framework.entity.MemberEntity">
+		update member 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="grade != null">`grade` = #{grade}, </if>
+			<if test="class != null">`class` = #{class}, </if>
+			<if test="studentNum != null">`student_num` = #{studentNum}, </if>
+			<if test="telephone != null">`telephone` = #{telephone}, </if>
+			<if test="admissionTime != null">`admission_time` = #{admissionTime}, </if>
+			<if test="volNum != null">`vol_num` = #{volNum}, </if>
+			<if test="department != null">`department` = #{department}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}</if>
+		</set>
+		where member_id = #{memberId}
+	</update>
+	
+	<delete id="delete">
+		delete from member where member_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from member where member_id in 
+		<foreach item="memberId" collection="array" open="(" separator="," close=")">
+			#{memberId}
+		</foreach>
+	</delete>
+
+</mapper>

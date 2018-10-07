@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.framework.dao.ManagerDao">
+
+	<select id="queryObject" resultType="com.framework.entity.ManagerEntity">
+		select * from manager where admin_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.framework.entity.ManagerEntity">
+		select * from manager 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from manager 
+	</select>
+	 
+	<insert id="save" parameterType="com.framework.entity.ManagerEntity" useGeneratedKeys="true" keyProperty="adminId">
+		insert into manager
+		(
+			`name`, 
+			`username`, 
+			`password`, 
+			`sex`, 
+			`qq`, 
+			`telephone`, 
+			`vol_num`, 
+			`position`, 
+			`remarks`
+		)
+		values
+		(
+			#{name}, 
+			#{username}, 
+			#{password}, 
+			#{sex}, 
+			#{qq}, 
+			#{telephone}, 
+			#{volNum}, 
+			#{position}, 
+			#{remarks}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.framework.entity.ManagerEntity">
+		update manager 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="qq != null">`qq` = #{qq}, </if>
+			<if test="telephone != null">`telephone` = #{telephone}, </if>
+			<if test="volNum != null">`vol_num` = #{volNum}, </if>
+			<if test="position != null">`position` = #{position}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}</if>
+		</set>
+		where admin_id = #{adminId}
+	</update>
+	
+	<delete id="delete">
+		delete from manager where admin_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from manager where admin_id in 
+		<foreach item="adminId" collection="array" open="(" separator="," close=")">
+			#{adminId}
+		</foreach>
+	</delete>
+
+</mapper>

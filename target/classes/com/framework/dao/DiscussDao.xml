@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.framework.dao.DiscussDao">
+
+	<select id="queryObject" resultType="com.framework.entity.DiscussEntity">
+		select * from discuss where discuss_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.framework.entity.DiscussEntity">
+		select * from discuss 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from discuss 
+	</select>
+	 
+	<insert id="save" parameterType="com.framework.entity.DiscussEntity" useGeneratedKeys="true" keyProperty="discussId">
+		insert into discuss
+		(
+			`username`, 
+			`time`, 
+			`content`
+		)
+		values
+		(
+			#{username}, 
+			#{time}, 
+			#{content}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.framework.entity.DiscussEntity">
+		update discuss 
+		<set>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="time != null">`time` = #{time}, </if>
+			<if test="content != null">`content` = #{content}</if>
+		</set>
+		where discuss_id = #{discussId}
+	</update>
+	
+	<delete id="delete">
+		delete from discuss where discuss_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from discuss where discuss_id in 
+		<foreach item="discussId" collection="array" open="(" separator="," close=")">
+			#{discussId}
+		</foreach>
+	</delete>
+
+</mapper>

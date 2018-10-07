@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.framework.dao.DonationDao">
+
+	<select id="queryObject" resultType="com.framework.entity.DonationEntity">
+		select * from donation where donation_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.framework.entity.DonationEntity">
+		select * from donation 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from donation 
+	</select>
+	 
+	<insert id="save" parameterType="com.framework.entity.DonationEntity" useGeneratedKeys="true" keyProperty="donationId">
+		insert into donation
+		(
+			`time`, 
+			`donation_man`, 
+			`goods`, 
+			`picture`, 
+			`number`
+		)
+		values
+		(
+			#{time}, 
+			#{donationMan}, 
+			#{goods}, 
+			#{picture}, 
+			#{number}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.framework.entity.DonationEntity">
+		update donation 
+		<set>
+			<if test="time != null">`time` = #{time}, </if>
+			<if test="donationMan != null">`donation_man` = #{donationMan}, </if>
+			<if test="goods != null">`goods` = #{goods}, </if>
+			<if test="picture != null">`picture` = #{picture}, </if>
+			<if test="number != null">`number` = #{number}</if>
+		</set>
+		where donation_id = #{donationId}
+	</update>
+	
+	<delete id="delete">
+		delete from donation where donation_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from donation where donation_id in 
+		<foreach item="donationId" collection="array" open="(" separator="," close=")">
+			#{donationId}
+		</foreach>
+	</delete>
+
+</mapper>

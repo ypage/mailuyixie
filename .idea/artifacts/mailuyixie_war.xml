@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="mailuyixie:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="evaluation.war">
+      <element id="artifact" artifact-name="mailuyixie:war exploded" />
+    </root>
+  </artifact>
+</component>

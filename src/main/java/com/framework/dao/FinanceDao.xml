@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.framework.dao.FinanceDao">
+
+	<select id="queryObject" resultType="com.framework.entity.FinanceEntity">
+		select * from finance where finance_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.framework.entity.FinanceEntity">
+		select * from finance 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from finance 
+	</select>
+	 
+	<insert id="save" parameterType="com.framework.entity.FinanceEntity" useGeneratedKeys="true" keyProperty="financeId">
+		insert into finance
+		(
+			`total`, 
+			`name`, 
+			`time`, 
+			`cost`, 
+			`type`, 
+			`reason`
+		)
+		values
+		(
+			#{total}, 
+			#{name}, 
+			#{time}, 
+			#{cost}, 
+			#{type}, 
+			#{reason}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.framework.entity.FinanceEntity">
+		update finance 
+		<set>
+			<if test="total != null">`total` = #{total}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="time != null">`time` = #{time}, </if>
+			<if test="cost != null">`cost` = #{cost}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="reason != null">`reason` = #{reason}</if>
+		</set>
+		where finance_id = #{financeId}
+	</update>
+	
+	<delete id="delete">
+		delete from finance where finance_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from finance where finance_id in 
+		<foreach item="financeId" collection="array" open="(" separator="," close=")">
+			#{financeId}
+		</foreach>
+	</delete>
+
+</mapper>
